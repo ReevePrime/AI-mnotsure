@@ -1,0 +1,13 @@
+[project]
+name = "ai-mnotsure"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "deepeval>=4.0.2",
+    "faiss-cpu>=1.13.2",
+    "openai>=2.36.0",
+    "python-dotenv>=1.2.2",
+    "tiktoken>=0.13.0",
+]
