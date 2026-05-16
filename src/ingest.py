@@ -7,12 +7,12 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 DOCUMENT_PATH = "data/source.txt"
-INDEX_PATH    = "data/index.faiss"
-CHUNKS_PATH   = "data/chunks.pkl"
+INDEX_PATH = "data/index.faiss"
+CHUNKS_PATH = "data/chunks.pkl"
 
-EMBED_MODEL   = "text-embedding-3-small"
-EMBED_DIM     = 1536
-OVERLAP_CHARS = 100 
+EMBED_MODEL = "text-embedding-3-small"
+EMBED_DIM = 1536
+OVERLAP_CHARS = 100
 
 load_dotenv()
 client = OpenAI()
@@ -21,17 +21,18 @@ client = OpenAI()
 #                         CHUNKING FUNCTIONS
 ##########################################################################
 
+
 def load_document(path: str) -> str:
     """Function to load our document from disk."""
     with open(path, "r", encoding="utf-8") as f:
         return f.read()
-    
+
 
 def paragraph_chunks(text: str, overlap_chars: int = OVERLAP_CHARS) -> list[str]:
     """Split text at double new lines (\n\n) This basically chunks the text based on paragraphs/sections"""
 
     raw = [p.strip() for p in text.split('\n\n') if p.strip()]
-    
+
     chunks = []
     for i, para in enumerate(raw):
         if i == 0:
@@ -41,7 +42,7 @@ def paragraph_chunks(text: str, overlap_chars: int = OVERLAP_CHARS) -> list[str]
             tail = chunks[-1][-overlap_chars:]
             # Then we append it to the front of the next chunk to create some overlap
             chunks.append(tail + ' ' + para)
-    
+
     return chunks
 
 
@@ -63,14 +64,15 @@ def build_index(embeddings: list[list[float]]) -> faiss.IndexFlatL2:
     """We create an IndexFlatL2 and add all embedding vectors to it."""
 
     # FAISS isn't LLM specific. It's a general-purpose vector search library.
-    # So we need to specify how many dimensions our vectors have. 
+    # So we need to specify how many dimensions our vectors have.
     # Our embedding model is text-embedding-3-small. It produces 1536-dimensional vectors.
     # So we tell FAISS to expect 1536-dimensional vectors.
     index = faiss.IndexFlatL2(EMBED_DIM)
-    # FAISS expects a 2D numpy array of shape (n_vectors, d) (dtype must be float32)
+    # FAISS expects a 2D numpy array of shape (n_vectors, d) (dtype must be float32 for IndexFlatL2)
     vectors = np.array(embeddings, dtype=np.float32)
     index.add(vectors)
     return index
+
 
 def save_artifacts(index: faiss.IndexFlatL2, chunks: list[str]) -> None:
     """
@@ -85,7 +87,7 @@ def save_artifacts(index: faiss.IndexFlatL2, chunks: list[str]) -> None:
 
     # Sanity check
     print(f"  Saved FAISS index  → {INDEX_PATH}  ({index.ntotal} vectors)")
-    
+
     with open(CHUNKS_PATH, "wb") as f:
         # We use pickle to serialize the list of chunk strings
         # so we recognize which chunk corresponds to which vector in the FAISS index.
@@ -105,16 +107,19 @@ def main():
     chunks = paragraph_chunks(text)
     print(f"  Created {len(chunks)} chunks")
     for i, c in enumerate(chunks):
-        print(f"  Chunk {i:02d}: {len(c):>4} chars — {c[:60].replace(chr(10), ' ')}...")
+        print(
+            f"  Chunk {i:02d}: {len(c):>4} chars — {c[:60].replace(chr(10), ' ')}...")
 
     embeddings = embed_batch(chunks)
-    print(f"  Generated {len(embeddings)} embeddings, each {len(embeddings[0])} dimensions")
+    print(
+        f"  Generated {len(embeddings)} embeddings, each {len(embeddings[0])} dimensions")
 
     index = build_index(embeddings)
     print(f"  Index contains {index.ntotal} vectors")
 
     save_artifacts(index, chunks)
     print("\n✓ Ingestion complete.")
+
 
 if __name__ == "__main__":
     main()
