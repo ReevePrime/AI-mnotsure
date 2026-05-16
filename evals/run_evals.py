@@ -27,23 +27,23 @@ class OllamaJudge(DeepEvalBaseLLM):
     def load_model(self):
         return self.model
 
-    def generate(self, prompt: str, schema=None) -> tuple[str, float]:
+    def generate(self, prompt: str, schema=None) -> str:
         kwargs = {"response_format": {"type": "json_object"}} if schema else {}
         response = self._client.chat.completions.create(
             model=self.model,
             messages=[{"role": "user", "content": prompt}],
             **kwargs,
         )
-        return response.choices[0].message.content, 0.0
+        return response.choices[0].message.content
 
-    async def a_generate(self, prompt: str, schema=None) -> tuple[str, float]:
+    async def a_generate(self, prompt: str, schema=None) -> str:
         kwargs = {"response_format": {"type": "json_object"}} if schema else {}
         response = await self._async_client.chat.completions.create(
             model=self.model,
             messages=[{"role": "user", "content": prompt}],
             **kwargs,
         )
-        return response.choices[0].message.content, 0.0
+        return response.choices[0].message.content
 
     def get_model_name(self) -> str:
         return self.model
