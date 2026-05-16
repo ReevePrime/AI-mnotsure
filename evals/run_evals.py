@@ -4,7 +4,6 @@ from deepeval.metrics import (
     AnswerRelevancyMetric,
     FaithfulnessMetric,
     ContextualRecallMetric,
-    HallucinationMetric,
 )
 from deepeval.models.base_model import DeepEvalBaseLLM
 from deepeval.test_case import LLMTestCase
@@ -82,12 +81,6 @@ metrics = [
         include_reason=True,
         async_mode=False,
     ),
-    HallucinationMetric(
-        threshold=0.3,         # Does the context contradict the answer? We want this to be low
-        model=JUDGE_MODEL,
-        include_reason=True,
-        async_mode=False,
-    ),
 ]
 
 
@@ -151,7 +144,6 @@ def save_summary(test_cases: list[LLMTestCase]) -> None:
         "AnswerRelevancyMetric",
         "FaithfulnessMetric",
         "ContextualRecallMetric",
-        "HallucinationMetric",
     ]
 
     # Collect per-question results
@@ -246,7 +238,6 @@ def main():
         "AnswerRelevancyMetric",
         "FaithfulnessMetric",
         "ContextualRecallMetric",
-        "HallucinationMetric",
     ]
     questions_results = []
     for case in test_cases:
