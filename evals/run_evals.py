@@ -25,7 +25,7 @@ RESULTS_DIR = BASE_DIR / "results"
 #                               METRICS
 ##########################################################################
 
-JUDGE_MODEL = "gpt-5.2"
+JUDGE_MODEL = "gpt-4o-mini"
 
 # We check for relevantness, faithfulness, contextual recall, and hallucination
 metrics = [

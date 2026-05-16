@@ -11,7 +11,7 @@ from retriever import load_index, load_chunks, retrieve
 load_dotenv()
 client = OpenAI()
 
-LLM_MODEL = "gpt-5.2"
+LLM_MODEL = "gpt-4o-mini"
 
 ##########################################################################
 #                          PROMPT TEMPLATE
