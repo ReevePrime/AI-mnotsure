@@ -14,7 +14,7 @@ TOP_K = 3       # number of chunks to retrieve per query
 # Rule of thumb: 3 is a good number to balance relevance and diversity
 # More might make it noisy, less might miss relevant info.
 
-MAX_DISTANCE = 1.2     # we filter out chunks that are less similar than this threshold
+MAX_DISTANCE = 1    # we filter out chunks that are less similar than this threshold
 
 load_dotenv()
 client = OpenAI()
