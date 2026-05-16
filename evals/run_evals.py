@@ -1,5 +1,5 @@
 from deepeval import evaluate
-from deepeval.evaluate.configs import AsyncConfig
+from deepeval.evaluate.configs import AsyncConfig, ErrorConfig
 from deepeval.metrics import (
     AnswerRelevancyMetric,
     FaithfulnessMetric,
@@ -231,7 +231,12 @@ def main():
     test_cases = build_test_cases(dataset)
 
     print("\n── Running DeepEval metrics ──")
-    evaluate(test_cases, metrics, async_config=AsyncConfig(run_async=False))
+    evaluate(
+        test_cases,
+        metrics,
+        async_config=AsyncConfig(run_async=False),
+        error_config=ErrorConfig(ignore_errors=True),
+    )
 
     print("\n── Saving results ──")
     # Rebuild summary from evaluated test cases
