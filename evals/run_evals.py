@@ -30,6 +30,7 @@ class AnthropicJudge(DeepEvalBaseLLM):
         response = self._client.messages.create(
             model=self.model,
             max_tokens=4096,
+            temperature=0,
             messages=[{"role": "user", "content": prompt}],
             **kwargs,
         )
