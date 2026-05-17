@@ -12,7 +12,8 @@ CHUNKS_PATH = "data/chunks.pkl"
 
 EMBED_MODEL = "text-embedding-3-small"
 EMBED_DIM = 1536
-OVERLAP_CHARS = 100
+OVERLAP_CHARS = 200
+MIN_CHUNK_CHARS = 200  # paragraphs shorter than this are merged forward
 
 load_dotenv()
 client = OpenAI()
@@ -28,19 +29,34 @@ def load_document(path: str) -> str:
         return f.read()
 
 
-def paragraph_chunks(text: str, overlap_chars: int = OVERLAP_CHARS) -> list[str]:
-    """Split text at double new lines (\n\n) This basically chunks the text based on paragraphs/sections"""
+def paragraph_chunks(text: str, overlap_chars: int = OVERLAP_CHARS, min_chunk_chars: int = MIN_CHUNK_CHARS) -> list[str]:
+    """Split text at double new lines (\n\n), then merge short paragraphs forward
+    so that small subsections (e.g. a two-line PRICING paragraph) are never
+    isolated chunks with too little embedding signal."""
 
     raw = [p.strip() for p in text.split('\n\n') if p.strip()]
 
+    # Accumulate paragraphs into a buffer until it reaches min_chunk_chars
+    merged = []
+    buf = ""
+    for para in raw:
+        buf = (buf + "\n\n" + para) if buf else para
+        if len(buf) >= min_chunk_chars:
+            merged.append(buf)
+            buf = ""
+    # Flush any leftover into the last chunk rather than creating a tiny tail
+    if buf:
+        if merged:
+            merged[-1] += "\n\n" + buf
+        else:
+            merged.append(buf)
+
     chunks = []
-    for i, para in enumerate(raw):
+    for i, para in enumerate(merged):
         if i == 0:
             chunks.append(para)
         else:
-            # We grab the last chunk and slice its trailing n-characters
             tail = chunks[-1][-overlap_chars:]
-            # Then we append it to the front of the next chunk to create some overlap
             chunks.append(tail + ' ' + para)
 
     return chunks

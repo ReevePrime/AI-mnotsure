@@ -20,7 +20,7 @@
   {
     "id": "mp-004",
     "category": "direct_factual_lookup",
-    "question": "What does Moorepay's starting price look like?",
+    "question": "What does Moorepay's packages starting price look like?",
     "expected_answer": "Moorepay's packages start from £36 per year, with pricing scaling based on the number of employees and the level of service selected."
   },
   {
