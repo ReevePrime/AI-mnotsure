@@ -12,7 +12,7 @@ CHUNKS_PATH = "data/chunks.pkl"
 
 EMBED_MODEL = "text-embedding-3-small"
 EMBED_DIM = 1536
-OVERLAP_CHARS = 100
+OVERLAP_CHARS = 50
 
 load_dotenv()
 client = OpenAI()

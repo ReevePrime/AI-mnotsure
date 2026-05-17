@@ -216,6 +216,13 @@ def main():
         action="store_true",
         help="Run only the first 5 test cases (for CI smoke tests)"
     )
+    parser.add_argument(
+        "--min-pass-rate",
+        type=float,
+        default=1.0,
+        metavar="RATE",
+        help="Minimum fraction of test cases that must pass (0.0–1.0). Defaults to 1.0 (all must pass)."
+    )
     args = parser.parse_args()
 
     print("── Loading golden dataset ──")
@@ -288,20 +295,24 @@ def main():
     print_summary(summary)
 
 
-    # GitHub Actions only knows a step failed if the process exits with a non-zero code, so
-    # after saving summary, we check whether any metric failed threshold
-    any_failed = any(
-        not q["metrics"].get(name, {}).get("passed", True)
-        for q in questions_results
-        for name in metric_names
+    # GitHub Actions only knows a step failed if the process exits with a non-zero code.
+    # A test case passes if every metric passed; we then compare the overall pass rate
+    # against --min-pass-rate to decide whether CI should succeed or fail.
+    passed = sum(
+        1 for q in questions_results
+        if all(q["metrics"].get(name, {}).get("passed", False) for name in metric_names)
     )
+    total = len(questions_results)
+    pass_rate = passed / total if total else 0.0
 
-    if any_failed:
-        print("\n✗ One or more metrics failed threshold. See summary for details.")
-        sys.exit(1)    # non-zero exit code to fail the GitHub Actions step in case of failure
-    else:
-        print("\n✓ All metrics passed threshold.")
+    print(f"\n  Pass rate: {passed}/{total} ({pass_rate:.0%}) — threshold: {args.min_pass_rate:.0%}")
+
+    if pass_rate >= args.min_pass_rate:
+        print("✓ Pass rate meets threshold.")
         sys.exit(0)
+    else:
+        print("✗ Pass rate below threshold. See summary for details.")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
