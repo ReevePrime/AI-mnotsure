@@ -4,11 +4,10 @@ on:
   push:
     branches:
       - main # Running when we push to main. With less time/money restrictions, I would have had this run on a schedule instead
-
+      
 jobs:
   full-eval:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,6 +31,22 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Debug Anthropic connectivity
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          python -c "
+          import anthropic, os
+          print('Key prefix:', os.environ.get('ANTHROPIC_API_KEY', '')[:14])
+          client = anthropic.Anthropic()
+          msg = client.messages.create(
+              model='claude-haiku-4-5-20251001',
+              max_tokens=10,
+              messages=[{'role': 'user', 'content': 'ping'}]
+          )
+          print('Anthropic API OK:', msg.content[0].text)
+          "
+
       - name: Build FAISS index
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -41,6 +56,8 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DEEPEVAL_TELEMETRY_OPT_OUT: "YES"
+          CONFIDENT_AI_API_KEY: ""
         run: python evals/run_evals.py
 
       - name: Upload eval results
