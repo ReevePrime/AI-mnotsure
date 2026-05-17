@@ -297,5 +297,21 @@ def main():
     print_summary(summary)
 
 
+    # GitHub Actions only knows a step failed if the process exits with a non-zero code, so
+    # after saving summary, we check whether any metric failed threshold
+    any_failed = any(
+        not q["metrics"].get(name, {}).get("passed", True)
+        for q in questions_results
+        for name in metric_names
+    )
+
+    if any_failed:
+        print("\n✗ One or more metrics failed threshold. See summary for details.")
+        sys.exit(1)    # non-zero exit code to fail the GitHub Actions step in case of failure
+    else:
+        print("\n✓ All metrics passed threshold.")
+        sys.exit(0)
+
+
 if __name__ == "__main__":
     main()
