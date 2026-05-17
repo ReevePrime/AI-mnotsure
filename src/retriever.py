@@ -16,7 +16,7 @@ TOP_K = 3       # number of chunks to retrieve per query
 
 MAX_DISTANCE = 1    # we filter out chunks that are less similar than this threshold
 
-load_dotenv()
+load_dotenv(override=True)
 client = OpenAI()
 
 
