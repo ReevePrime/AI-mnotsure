@@ -1,5 +1,5 @@
 from deepeval import dataset, evaluate
-from deepeval.evaluate.configs import AsyncConfig, ErrorConfig
+from deepeval.evaluate.configs import ErrorConfig
 from deepeval.metrics import (
     AnswerRelevancyMetric,
     FaithfulnessMetric,
@@ -21,6 +21,7 @@ class AnthropicJudge(DeepEvalBaseLLM):
     def __init__(self, model: str = "claude-haiku-4-5-20251001"):
         self.model = model
         self._client = anthropic.Anthropic()
+        self._async_client = anthropic.AsyncAnthropic()
 
     def load_model(self):
         return self.model
@@ -67,20 +68,17 @@ metrics = [
         threshold=0.7,
         model=JUDGE_MODEL,
         include_reason=True,
-        async_mode=False,
     ),
     FaithfulnessMetric(         # Is the answer supported by the retrieved source?
         threshold=0.7,
         model=JUDGE_MODEL,
         include_reason=True,
-        async_mode=False,
     ),
     ContextualRecallMetric(     # Did we retrieve relevant chunks to answer this question
         # If it's low but the answer is correct, the issue is with chunking, not generation
         threshold=0.7,
         model=JUDGE_MODEL,
         include_reason=True,
-        async_mode=False,
     ),
 ]
 
@@ -242,7 +240,6 @@ def main():
     eval_result = evaluate(
         test_cases,
         metrics,
-        async_config=AsyncConfig(run_async=False),
         error_config=ErrorConfig(ignore_errors=True),
     )
 
