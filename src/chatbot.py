@@ -4,14 +4,14 @@
 # Returns a structured result dict.
 
 import math
-from openai import OpenAI
+import anthropic
 from dotenv import load_dotenv
 from retriever import load_index, load_chunks, retrieve
 
 load_dotenv()
-client = OpenAI()
+client = anthropic.Anthropic()
 
-LLM_MODEL = "gpt-4o-mini"
+LLM_MODEL = "claude-haiku-4-5-20251001"
 
 ##########################################################################
 #                          PROMPT TEMPLATE
@@ -91,17 +91,18 @@ def ask(question: str) -> dict:
     user_message = build_prompt(question, context_texts)
 
     # Then we call the LLM
-    response = client.chat.completions.create(
+    response = client.messages.create(
         model=LLM_MODEL,
+        max_tokens=1024,
+        system=SYSTEM_PROMPT,
         messages=[
-            {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": user_message}
         ],
         # WE KEEP IT TEMPERATURE AT 0 TO ENSURE NO RANDOMNESS
         # Also at 0 the LLM will always produce the same answer for the same input.
         temperature=0,
     )
-    answer = response.choices[0].message.content.strip()
+    answer = response.content[0].text.strip()
 
     # We return the structured result
     return {

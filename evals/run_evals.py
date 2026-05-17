@@ -7,42 +7,44 @@ from deepeval.metrics import (
 )
 from deepeval.models.base_model import DeepEvalBaseLLM
 from deepeval.test_case import LLMTestCase
-from openai import OpenAI, AsyncOpenAI
+import anthropic
 
 import json
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 from chatbot import ask
 
 
-class OllamaJudge(DeepEvalBaseLLM):
-    def __init__(self, model: str = "qwen2.5:14b"):
+class AnthropicJudge(DeepEvalBaseLLM):
+    def __init__(self, model: str = "claude-haiku-4-5-20251001"):
         self.model = model
-        self._client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
-        self._async_client = AsyncOpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
+        self._client = anthropic.Anthropic()
+        self._async_client = anthropic.AsyncAnthropic()
 
     def load_model(self):
         return self.model
 
     def generate(self, prompt: str, schema=None) -> str:
-        kwargs = {"response_format": {"type": "json_object"}} if schema else {}
-        response = self._client.chat.completions.create(
+        kwargs = {"system": "Respond only with valid JSON, no other text."} if schema else {}
+        response = self._client.messages.create(
             model=self.model,
+            max_tokens=4096,
             messages=[{"role": "user", "content": prompt}],
             **kwargs,
         )
-        return response.choices[0].message.content
+        return response.content[0].text
 
     async def a_generate(self, prompt: str, schema=None) -> str:
-        kwargs = {"response_format": {"type": "json_object"}} if schema else {}
-        response = await self._async_client.chat.completions.create(
+        kwargs = {"system": "Respond only with valid JSON, no other text."} if schema else {}
+        response = await self._async_client.messages.create(
             model=self.model,
+            max_tokens=4096,
             messages=[{"role": "user", "content": prompt}],
             **kwargs,
         )
-        return response.choices[0].message.content
+        return response.content[0].text
 
     def get_model_name(self) -> str:
         return self.model
@@ -58,7 +60,7 @@ PIPELINE_CACHE_PATH = BASE_DIR / "pipeline_cache.json"
 #                               METRICS
 ##########################################################################
 
-JUDGE_MODEL = OllamaJudge("qwen2.5:14b")
+JUDGE_MODEL = AnthropicJudge("claude-haiku-4-5-20251001")
 
 # We check for relevantness, faithfulness, contextual recall, and hallucination
 metrics = [
@@ -66,20 +68,20 @@ metrics = [
         threshold=0.7,
         model=JUDGE_MODEL,
         include_reason=True,
-        async_mode=False,
+        async_mode=True,
     ),
     FaithfulnessMetric(         # Is the answer supported by the retrieved source?
         threshold=0.7,
         model=JUDGE_MODEL,
         include_reason=True,
-        async_mode=False,
+        async_mode=True,
     ),
     ContextualRecallMetric(     # Did we retrieve relevant chunks to answer this question
         # If it's low but the answer is correct, the issue is with chunking, not generation
         threshold=0.7,
         model=JUDGE_MODEL,
         include_reason=True,
-        async_mode=False,
+        async_mode=True,
     ),
 ]
 
@@ -141,9 +143,9 @@ def save_summary(test_cases: list[LLMTestCase]) -> None:
     RESULTS_DIR.mkdir(exist_ok=True)
 
     metric_names = [
-        "AnswerRelevancyMetric",
-        "FaithfulnessMetric",
-        "ContextualRecallMetric",
+        "Answer Relevancy",
+        "Faithfulness",
+        "Contextual Recall",
     ]
 
     # Collect per-question results
@@ -152,7 +154,7 @@ def save_summary(test_cases: list[LLMTestCase]) -> None:
         q_result = {"question": case.input, "metrics": {}}
         for metric_result in case.metrics_data:
             q_result["metrics"][metric_result.name] = {
-                "score": round(metric_result.score, 3),
+                "score": round(metric_result.score, 3) if metric_result.score is not None else None,
                 "passed": metric_result.success,
                 "reason": metric_result.reason
             }
@@ -177,7 +179,7 @@ def save_summary(test_cases: list[LLMTestCase]) -> None:
         }
 
     summary = {
-        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "total_cases": len(test_cases),
         "aggregates": aggregates,
         "questions": questions_results
@@ -201,11 +203,12 @@ def print_summary(summary: dict) -> None:
     print()
 
     for metric_name, agg in summary["aggregates"].items():
-        short_name = metric_name.replace("Metric", "")
+        short_name = metric_name
         mean = agg["mean_score"]
         rate = agg["pass_rate"]
         bar = "█" * int((mean or 0) * 20)
-        print(f"  {short_name:<22} {bar:<20} {mean:.3f}  ({rate:.0%} pass rate)")
+        mean_str = f"{mean:.3f}" if mean is not None else "  N/A"
+        print(f"  {short_name:<22} {bar:<20} {mean_str}  ({rate:.0%} pass rate)")
 
     print("=" * 60)
 
@@ -223,7 +226,7 @@ def main():
     test_cases = build_test_cases(dataset)
 
     print("\n── Running DeepEval metrics ──")
-    evaluate(
+    eval_result = evaluate(
         test_cases,
         metrics,
         async_config=AsyncConfig(run_async=False),
@@ -231,20 +234,18 @@ def main():
     )
 
     print("\n── Saving results ──")
-    # Rebuild summary from evaluated test cases
-    # (evaluate() mutates the test_case objects in place with metric results)
     RESULTS_DIR.mkdir(exist_ok=True)
     metric_names = [
-        "AnswerRelevancyMetric",
-        "FaithfulnessMetric",
-        "ContextualRecallMetric",
+        "Answer Relevancy",
+        "Faithfulness",
+        "Contextual Recall",
     ]
     questions_results = []
-    for case in test_cases:
+    for result, case in zip(eval_result.test_results, test_cases):
         q_result = {"question": case.input, "metrics": {}}
-        for metric_result in case.metrics_data:
+        for metric_result in (result.metrics_data or []):
             q_result["metrics"][metric_result.name] = {
-                "score": round(metric_result.score, 3),
+                "score": round(metric_result.score, 3) if metric_result.score is not None else None,
                 "passed": metric_result.success,
                 "reason": metric_result.reason
             }
@@ -268,7 +269,7 @@ def main():
         }
 
     summary = {
-        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "total_cases": len(test_cases),
         "aggregates": aggregates,
         "questions": questions_results

@@ -1,0 +1,420 @@
+{
+  "timestamp": "2026-05-17T10:08:56.614829Z",
+  "total_cases": 20,
+  "aggregates": {
+    "Answer Relevancy": {
+      "mean_score": 0.7,
+      "pass_rate": 0.7
+    },
+    "Faithfulness": {
+      "mean_score": 0.95,
+      "pass_rate": 0.95
+    },
+    "Contextual Recall": {
+      "mean_score": 0.802,
+      "pass_rate": 0.75
+    }
+  },
+  "questions": [
+    {
+      "question": "When was Moorepay founded?",
+      "metrics": {
+        "Answer Relevancy": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the output directly and accurately addresses the question about when Moorepay was founded with no irrelevant information included. Great job with a perfectly focused response!"
+        },
+        "Faithfulness": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the actual output contains no contradictions with the retrieval context. The information presented is entirely faithful and accurate!"
+        },
+        "Contextual Recall": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the founding year of Moorepay (1966) is explicitly supported by multiple nodes in the retrieval context, with node 1 stating 'It was founded in 1966...' and node 2 directly confirming '1966 Moorepay is founded.' Perfect alignment!"
+        }
+      }
+    },
+    {
+      "question": "Where is Moorepay's headquarters located?",
+      "metrics": {
+        "Answer Relevancy": {
+          "score": 0.0,
+          "passed": false,
+          "reason": "The score is 0.00 because the output fails to address the input question about Moorepay's headquarters location. Instead of providing or attempting to find the answer, the response deflects by claiming insufficient information, which is a non-responsive approach to a straightforward factual query."
+        },
+        "Faithfulness": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because there are no contradictions between the actual output and the retrieval context. The information provided is fully faithful and accurately aligned with the source material!"
+        },
+        "Contextual Recall": {
+          "score": 0.0,
+          "passed": false,
+          "reason": "The score is 0.00 because the retrieval context in nodes 1 and 3 does not contain information about Moorepay's headquarters being located on Lees Street in Manchester. While the context mentions Moorepay is UK-based and references a location in Salford, Greater Manchester, there is no specific attribution of headquarters to Lees Street in Manchester."
+        }
+      }
+    },
+    {
+      "question": "What is Moorepay's payslip accuracy rate?",
+      "metrics": {
+        "Answer Relevancy": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the response directly and accurately addresses the question about Moorepay's payslip accuracy rate with no irrelevant statements. Great job providing a focused and relevant answer!"
+        },
+        "Faithfulness": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because there are no contradictions between the actual output and the retrieval context. The output faithfully adheres to the provided information with complete accuracy!"
+        },
+        "Contextual Recall": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "Perfect score! The statement about Moorepay's 99.9% payslip accuracy rate is directly supported by the 3rd node in retrieval context, which explicitly confirms this exact metric."
+        }
+      }
+    },
+    {
+      "question": "What does Moorepay's starting price look like?",
+      "metrics": {
+        "Answer Relevancy": {
+          "score": 0.0,
+          "passed": false,
+          "reason": "The score is 0.00 because the output fails to address the core question about Moorepay's starting price. Instead of providing pricing information or relevant details, the response indicates a lack of information without attempting to give any useful answer related to your query."
+        },
+        "Faithfulness": {
+          "score": 0.0,
+          "passed": false,
+          "reason": "The score is 0.00 because the actual output appears to contain information that directly contradicts or is entirely unsupported by the retrieval context. Despite the retrieval context providing substantial information about Moorepay including its founding date, market segment, customer base, team size, and service offerings, the actual output fails to align with or faithfully represent any of this available information."
+        },
+        "Contextual Recall": {
+          "score": 0.0,
+          "passed": false,
+          "reason": "The score is 0.00 because the retrieval context does not contain any information about Moorepay's pricing packages, starting prices, or how pricing scales. While node 3 in the retrieval context mentions Moorepay's products and services, it does not provide the specific pricing details needed to support the expected output about the \u00a336 per year starting price and employee-based scaling."
+        }
+      }
+    },
+    {
+      "question": "Which private equity firm currently owns the Zellis Group?",
+      "metrics": {
+        "Answer Relevancy": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the response directly and accurately addresses the question about which private equity firm owns the Zellis Group with no irrelevant information. Perfect execution!"
+        },
+        "Faithfulness": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because there are no contradictions between the actual output and the retrieval context. The output is perfectly faithful to the provided information!"
+        },
+        "Contextual Recall": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the expected output is comprehensively supported by the retrieval context. All key information\u2014that Apax Partners LLP currently owns the Zellis Group and acquired it from Bain Capital\u2014is directly confirmed across multiple nodes in retrieval context, with consistent corroboration from nodes 1, 2, and 3. Excellent retrieval quality!"
+        }
+      }
+    },
+    {
+      "question": "How quickly can Moorepay implement a basic pay run through its emergency service?",
+      "metrics": {
+        "Answer Relevancy": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the actual output directly and comprehensively addresses the input question about Moorepay's emergency service pay run implementation speed, with no irrelevant statements detected. Great job providing a focused and on-target response!"
+        },
+        "Faithfulness": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the actual output contains no contradictions with the retrieval context. The information presented is entirely faithful and accurate!"
+        },
+        "Contextual Recall": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "Perfect score! The retrieval context node directly contains the exact information needed, with sentence 1 fully supported by node 1 in retrieval context stating that Moorepay can implement a basic pay run in as little as 48 hours via its Managed Emergency Payroll Service."
+        }
+      }
+    },
+    {
+      "question": "What are the differences between Moorepay's managed payroll services and its bureau payroll services?",
+      "metrics": {
+        "Answer Relevancy": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the actual output directly addresses the question about the differences between Moorepay's managed payroll services and bureau payroll services with no irrelevant statements. Great job providing a focused and on-topic response!"
+        },
+        "Faithfulness": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because there are no contradictions between the actual output and the retrieval context. The output faithfully represents the information provided!"
+        },
+        "Contextual Recall": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because all key information in the expected output is directly supported by the retrieval context. The 1st node in retrieval context provides comprehensive coverage of managed payroll services, including the specific functions (data validation, calculations, processing, BACS payments, payslip printing, and regulatory reporting) and target business size (30\u20131,000 employees). The 2nd node clearly describes bureau payroll services as a middle-ground offering where Moorepay's expert staff handle the process while clients retain greater control. Perfect alignment between expected output and retrieved information!"
+        }
+      }
+    },
+    {
+      "question": "What accreditations and awards has Moorepay received, and what do they recognise?",
+      "metrics": {
+        "Answer Relevancy": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the output directly and comprehensively addresses the input question about Moorepay's accreditations and awards, with no irrelevant statements detected. Great job providing focused and relevant information!"
+        },
+        "Faithfulness": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because there are no contradictions detected between the actual output and the retrieval context. The output is perfectly faithful to the provided information!"
+        },
+        "Contextual Recall": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because all information in the expected output is comprehensively supported by node 1 in retrieval context, which confirms all accreditations and awards mentioned including CIPP PAS, HMRC approval, ISO 27001, BAB accreditation, the 2023 CIPP Excellence Award, EcoVadis Silver Medal with specific details, and the Microhive Gold Award. Excellent work!"
+        }
+      }
+    },
+    {
+      "question": "What HR software modules does Moorepay offer, and how do they connect to payroll?",
+      "metrics": {
+        "Answer Relevancy": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "Perfect score! The response directly addresses the question about Moorepay's HR software modules and their connection to payroll with relevant, focused information."
+        },
+        "Faithfulness": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because there are no contradictions between the actual output and the retrieval context. The output faithfully represents the information provided!"
+        },
+        "Contextual Recall": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because all key claims in the expected output are fully supported by the retrieval context. The 1st node in retrieval context comprehensively covers all HR software modules mentioned, while the 2nd node directly supports the integrated HR and payroll functionality without manual data transfer. Perfect alignment achieved!"
+        }
+      }
+    },
+    {
+      "question": "What is the Zellis Group, and where does Moorepay sit within it?",
+      "metrics": {
+        "Answer Relevancy": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the response directly and comprehensively addresses both parts of the question - explaining what the Zellis Group is and clearly describing where Moorepay fits within its organizational structure. All information provided is relevant and on-topic with no extraneous or irrelevant statements. Great job!"
+        },
+        "Faithfulness": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because there are no contradictions between the actual output and the retrieval context. The output faithfully represents the information provided!"
+        },
+        "Contextual Recall": {
+          "score": 0.8,
+          "passed": true,
+          "reason": "The score is 0.80 because most of the expected output is well-supported by the retrieval context. Sentences describing the four businesses (Zellis, Moorepay, Benifex, and Hastee), their operational autonomy, and their respective customer segments are all substantiated by the 2nd node in retrieval context. Additionally, the ownership by Apax Partners LLP is confirmed by the 1st node in retrieval context. However, the specific claims about employing over 2,000 people across the UK, Ireland, and India cannot be attributed to the retrieval context, which only mentions offices in Manchester and Farnborough, England, resulting in a minor gap in coverage."
+        }
+      }
+    },
+    {
+      "question": "What is the upper employee limit for businesses Moorepay serves?",
+      "metrics": {
+        "Answer Relevancy": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the actual output directly and accurately answers the specific question about the upper employee limit for businesses that Moorepay serves, with no irrelevant statements included. Great job providing a focused and on-target response!"
+        },
+        "Faithfulness": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because there are no contradictions detected between the actual output and the retrieval context. The information presented is fully aligned and faithful to the source material!"
+        },
+        "Contextual Recall": {
+          "score": 0.5,
+          "passed": false,
+          "reason": "The score is 0.50 because the retrieval context in node 1 supports the general market positioning of Moorepay serving businesses with up to 1,000 employees in the SMB segment, covering the first sentence of the expected output. However, the specific detail in the second sentence about managed payroll services being suited to businesses with between 30 and 1,000 employees cannot be attributed to the retrieval context, as node 1 only mentions the upper threshold of 1,000 employees without specifying the 30-employee lower limit."
+        }
+      }
+    },
+    {
+      "question": "Does Moorepay use a ticketing system for customer support?",
+      "metrics": {
+        "Answer Relevancy": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the response directly and thoroughly addresses the question about whether Moorepay uses a ticketing system for customer support, with no irrelevant statements present. Great job providing a focused and accurate answer!"
+        },
+        "Faithfulness": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because there are no contradictions between the actual output and the retrieval context. The information provided is entirely faithful and accurate!"
+        },
+        "Contextual Recall": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the entire expected output is fully supported by node 1 in retrieval context, which directly addresses all key claims: Moorepay's explicit non-use of ticketing systems, provision of UK-based phone and email support available 24/7/365, and native embedded support within the software."
+        }
+      }
+    },
+    {
+      "question": "Was Moorepay the first company to receive the CIPP Payroll Assurance Scheme accreditation, or just among the first?",
+      "metrics": {
+        "Answer Relevancy": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the actual output directly and precisely addresses the specific question asked about Moorepay's CIPP Payroll Assurance Scheme accreditation status. There are no irrelevant statements, and the response provides exactly what was requested. Excellent work!"
+        },
+        "Faithfulness": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the actual output contains no contradictions with the retrieval context. The response faithfully represents the provided information with perfect alignment!"
+        },
+        "Contextual Recall": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the entire expected output is directly supported by the retrieval context. Nodes 1 and 2 in the retrieval context both explicitly confirm that Moorepay was 'the first' payroll company to receive the CIPP's Payroll Assurance Scheme accreditation, which fully substantiates the claim in the expected output, including the emphasis that it was not merely among the first but definitively the first."
+        }
+      }
+    },
+    {
+      "question": "Who is the current CEO of Moorepay?",
+      "metrics": {
+        "Answer Relevancy": {
+          "score": 0.0,
+          "passed": false,
+          "reason": "The score is 0.00 because the actual output failed to provide any relevant information about who the current CEO of Moorepay is. Instead of answering the direct question asked, the response only acknowledged an inability to answer, which does not address the input at all."
+        },
+        "Faithfulness": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because there are no contradictions between the actual output and the retrieval context. The output faithfully represents the information provided!"
+        },
+        "Contextual Recall": {
+          "score": 0.5,
+          "passed": false,
+          "reason": "The score is 0.50 because while the retrieval context in node(s) 3 supports the mention of Anthony Peill joining as Managing Director in 2019 (sentence 2), critical information is missing. Specifically, the retrieval context lacks details about whether Anthony Peill currently holds this role or information about any current CEO of Moorepay, making it impossible to fully support the conclusion that the question cannot be answered from available information (sentences 3-4). Half of the expected output is attributable to the provided nodes, while the other half cannot be verified or contradicted by them."
+        }
+      }
+    },
+    {
+      "question": "How much does Moorepay charge per employee per month for its managed payroll service?",
+      "metrics": {
+        "Answer Relevancy": {
+          "score": 0.0,
+          "passed": false,
+          "reason": "The score is 0.00 because the actual output completely fails to address the question about Moorepay's pricing for managed payroll services. Instead of providing pricing information, the response only contains meta-statements about the speaker's limitations and inability to respond, making it entirely irrelevant to the specific question asked."
+        },
+        "Faithfulness": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the actual output contains no contradictions with the retrieval context. The information presented is entirely faithful and well-aligned with the source material. Great job!"
+        },
+        "Contextual Recall": {
+          "score": 0.25,
+          "passed": false,
+          "reason": "The score is 0.25 because while node 1 in retrieval context supports the conclusion that specific per-employee pricing details are unavailable (sentence 1), the retrieval context fails to substantiate the key claims in sentences 2 and 3. Specifically, there is no mention of the \u00a336 per year starting price, and no information about pricing depending on employee count and service level. The context does reference employee count ranges for suitability (30-1,000 employees), but this does not confirm the pricing structure assertion. The output relies heavily on information not present in the provided nodes."
+        }
+      }
+    },
+    {
+      "question": "Does Moorepay integrate with Xero or QuickBooks?",
+      "metrics": {
+        "Answer Relevancy": {
+          "score": 0.0,
+          "passed": false,
+          "reason": "The score is 0.00 because the output completely failed to address the user's direct question about Moorepay's integration with Xero or QuickBooks. Instead, the response consisted entirely of meta-commentary about the speaker's knowledge limitations and inability to answer, which provides zero factual information about the integrations requested. To improve, the output needs to provide actual information about whether these integrations exist or clearly state that this information is unavailable."
+        },
+        "Faithfulness": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because there are no contradictions between the actual output and the retrieval context. The output faithfully represents the information provided!"
+        },
+        "Contextual Recall": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the retrieval context in node(s) 3 perfectly supports the expected output by mentioning the 2022 Moorepay partnership with Bizimply, and the absence of any information about Xero, QuickBooks, or other third-party accounting software integrations in the retrieval context aligns perfectly with the claim that such integrations cannot be answered from available information."
+        }
+      }
+    },
+    {
+      "question": "How many clients does Moorepay currently have?",
+      "metrics": {
+        "Answer Relevancy": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the actual output directly and accurately addresses the input question about Moorepay's current number of clients with no irrelevant statements. Great work providing a focused and on-target response!"
+        },
+        "Faithfulness": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because there are no contradictions between the actual output and the retrieval context. The output is perfectly faithful to the provided information!"
+        },
+        "Contextual Recall": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "Perfect score! The expected output is directly supported by node 1 in retrieval context, which explicitly states that Moorepay supports approximately 10,000 clients across the United Kingdom."
+        }
+      }
+    },
+    {
+      "question": "What is the size of Moorepay's customer base in the UK?",
+      "metrics": {
+        "Answer Relevancy": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the response directly and comprehensively addresses the question about Moorepay's UK customer base size with no irrelevant statements. Great job!"
+        },
+        "Faithfulness": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because there are no contradictions between the actual output and the retrieval context. The output faithfully represents the information provided!"
+        },
+        "Contextual Recall": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "Perfect score! The expected output about Moorepay's customer base of approximately 10,000 clients across the United Kingdom is directly and clearly supported by node 1 in the retrieval context."
+        }
+      }
+    },
+    {
+      "question": "Is Moorepay's customer support available only during UK business hours?",
+      "metrics": {
+        "Answer Relevancy": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the response directly and comprehensively addresses the question about Moorepay's customer support availability during UK business hours with no irrelevant statements. Great job providing a focused and accurate answer!"
+        },
+        "Faithfulness": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because there are no contradictions between the actual output and the retrieval context. The information provided is fully faithful and accurately reflects the source material!"
+        },
+        "Contextual Recall": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the expected output is fully supported by the retrieval context. The statement about Moorepay's 24/7, 365-day customer support availability is directly confirmed by node 1 in retrieval context, which explicitly states the same information. Excellent alignment!"
+        }
+      }
+    },
+    {
+      "question": "Is Moorepay's payroll software hosted on its own proprietary infrastructure?",
+      "metrics": {
+        "Answer Relevancy": {
+          "score": 0.0,
+          "passed": false,
+          "reason": "The score is 0.00 because the actual output fails to answer the specific question about whether Moorepay's payroll software is hosted on proprietary infrastructure. Instead of providing relevant information or details about Moorepay's hosting infrastructure, the response merely acknowledges a lack of information, which does not address the input query at all."
+        },
+        "Faithfulness": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because the actual output contains no contradictions with the retrieval context. The information presented is fully consistent and faithful to the source material!"
+        },
+        "Contextual Recall": {
+          "score": 1.0,
+          "passed": true,
+          "reason": "The score is 1.00 because all key claims in the expected output are directly supported by nodes in retrieval context. The 2nd node explicitly confirms that Moorepay's platform is backed by Microsoft Azure infrastructure and monitored by BITsight for security, perfectly aligning with the expected output's assertions."
+        }
+      }
+    }
+  ]
+}
