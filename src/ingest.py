@@ -12,7 +12,7 @@ CHUNKS_PATH = "data/chunks.pkl"
 
 EMBED_MODEL = "text-embedding-3-small"
 EMBED_DIM = 1536
-OVERLAP_CHARS = 50
+OVERLAP_CHARS = 200
 MIN_CHUNK_CHARS = 200  # paragraphs shorter than this are merged forward
 
 load_dotenv()
