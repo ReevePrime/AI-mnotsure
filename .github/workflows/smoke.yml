@@ -46,6 +46,7 @@ jobs:
       - name: Run smoke eval
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python evals/run_evals.py --smoke
 
       # We upload the results as an artifact so we can inspect them
