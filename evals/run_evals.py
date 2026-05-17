@@ -1,4 +1,4 @@
-from deepeval import evaluate
+from deepeval import dataset, evaluate
 from deepeval.evaluate.configs import AsyncConfig, ErrorConfig
 from deepeval.metrics import (
     AnswerRelevancyMetric,
@@ -8,7 +8,7 @@ from deepeval.metrics import (
 from deepeval.models.base_model import DeepEvalBaseLLM
 from deepeval.test_case import LLMTestCase
 import anthropic
-
+import argparse
 import json
 import sys
 from datetime import datetime, timezone
@@ -218,9 +218,23 @@ def print_summary(summary: dict) -> None:
 ##########################################################################
 
 def main():
+    
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--smoke",
+        action="store_true",
+        help="Run only the first 5 test cases (for CI smoke tests)"
+    )
+    args = parser.parse_args()
+
     print("── Loading golden dataset ──")
     dataset = load_golden_dataset()
-    print(f"  {len(dataset)} test cases loaded\n")
+
+    if args.smoke:
+      dataset = dataset[:5]
+      print(f"  Smoke mode: running {len(dataset)} of {len(load_golden_dataset())} cases\n")
+    else:
+      print(f"  {len(dataset)} test cases loaded\n")
 
     print("── Running pipeline for each question ──")
     test_cases = build_test_cases(dataset)
