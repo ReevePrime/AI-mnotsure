@@ -1,3 +1,13 @@
+# Environment
 .venv
 .git
 .env
+
+# FAISS artifacts 
+data/index.faiss
+data/chunks.pkl
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
