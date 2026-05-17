@@ -1,0 +1,54 @@
+name: Smoke Eval
+
+on:
+  push:
+    branches-ignore:
+      - main  # This is a smoke test that will run on every push to any branch, so we keep it minimal to avoid high token usage. Otherwise it would be too long/expensive
+              # The more comprehensive tests are handled by full-eval.yml and run less often (merge to main)
+  pull_request:      
+
+jobs:
+  smoke-eval:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      #  This is in order to speed up subsequent runs by reusing the installed packages
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      #  The index files are not committed to the repo (they're in .gitignore)
+      #  so we rebuild them fresh on each CI run
+      - name: Build FAISS index
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python src/ingest.py
+
+      # 6. Run smoke evals
+      - name: Run smoke eval
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python evals/run_evals.py --smoke
+
+      # We upload the results as an artifact so we can inspect them
+      - name: Upload eval results
+        if: always()    # upload even if the eval step failed
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-eval-results
+          path: evals/results/summary.json
