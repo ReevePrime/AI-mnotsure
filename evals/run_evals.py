@@ -21,7 +21,6 @@ class AnthropicJudge(DeepEvalBaseLLM):
     def __init__(self, model: str = "claude-haiku-4-5-20251001"):
         self.model = model
         self._client = anthropic.Anthropic()
-        self._async_client = anthropic.AsyncAnthropic()
 
     def load_model(self):
         return self.model
@@ -37,14 +36,8 @@ class AnthropicJudge(DeepEvalBaseLLM):
         return response.content[0].text
 
     async def a_generate(self, prompt: str, schema=None) -> str:
-        kwargs = {"system": "Respond only with valid JSON, no other text."} if schema else {}
-        response = await self._async_client.messages.create(
-            model=self.model,
-            max_tokens=4096,
-            messages=[{"role": "user", "content": prompt}],
-            **kwargs,
-        )
-        return response.content[0].text
+        import asyncio
+        return await asyncio.to_thread(self.generate, prompt, schema)
 
     def get_model_name(self) -> str:
         return self.model
