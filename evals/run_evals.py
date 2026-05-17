@@ -1,5 +1,5 @@
 from deepeval import dataset, evaluate
-from deepeval.evaluate.configs import ErrorConfig
+from deepeval.evaluate.configs import AsyncConfig, ErrorConfig
 from deepeval.metrics import (
     AnswerRelevancyMetric,
     FaithfulnessMetric,
@@ -233,6 +233,7 @@ def main():
     eval_result = evaluate(
         test_cases,
         metrics,
+        async_config=AsyncConfig(run_async=False),
         error_config=ErrorConfig(ignore_errors=True),
     )
 
