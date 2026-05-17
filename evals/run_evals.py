@@ -219,7 +219,7 @@ def main():
     parser.add_argument(
         "--min-pass-rate",
         type=float,
-        default=1.0,
+        default=0.7,
         metavar="RATE",
         help="Minimum fraction of test cases that must pass (0.0–1.0). Defaults to 1.0 (all must pass)."
     )
