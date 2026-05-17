@@ -1,0 +1,48 @@
+name: Full Eval
+
+on:
+  push:
+    branches:
+      - main # Running when we push to main. With less time/money restrictions, I would have had this run on a schedule instead
+
+jobs:
+  full-eval:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build FAISS index
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python src/ingest.py
+
+      - name: Run full eval suite
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python evals/run_evals.py
+
+      - name: Upload eval results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-eval-results-${{ github.sha }}    # unique name per commit
+          path: evals/results/summary.json
+          retention-days: 90    # keep results for 90 days
